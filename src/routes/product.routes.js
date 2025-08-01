@@ -2,13 +2,14 @@ const express = require("express");
 const router = express.Router();
 const productCtrl = require("../controllers/product.controller");
 const auth = require("../middlewares/auth.middleware");
+const { isAdmin } = require("../middlewares/role.middleware");
 
-// Rutas públicas
-router.get("/", productCtrl.getAllProducts);
+// Rutas para cualquier rol de usuario
+router.get("/", auth, productCtrl.getAllProducts);
 
-// Rutas protegidas
-router.post("/", auth, productCtrl.createProduct);
-router.put("/:id", auth, productCtrl.updateProduct);
-router.delete("/:id", auth, productCtrl.deleteProduct);
+// Rutas protegidas para ADMIN
+router.post("/", auth, isAdmin, productCtrl.createProduct);
+router.put("/:id", auth, isAdmin, productCtrl.updateProduct);
+router.delete("/:id", auth, isAdmin, productCtrl.deleteProduct);
 
 module.exports = router;

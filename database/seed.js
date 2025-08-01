@@ -5,6 +5,7 @@ const { productFactory } = require("./factories/product.factory");
 
 const User = require("../src/models/user.model");
 const Product = require("../src/models/product.model");
+const bcrypt = require("bcrypt");
 
 (async () => {
   try {
@@ -15,7 +16,16 @@ const Product = require("../src/models/product.model");
     await User.deleteMany();
     await Product.deleteMany();
 
-    // Crear usuarios
+    // Crear usuario ADMIN manual
+    const admin = new User({
+      name: "Admin",
+      email: "admin@example.com",
+      password: "123456",
+      role: "ADMIN",
+    });
+    await admin.save();
+
+    // Crear usuarios CUSTOMER con factory
     const users = [];
     for (let i = 0; i < 5; i++) {
       const user = await userFactory();

@@ -15,5 +15,11 @@ app.use("/api/auth", authRoutes);
 const productRoutes = require("./routes/product.routes");
 app.use("/api/products", productRoutes);
 
+const orderRoutes = require('./routes/order.routes');
+app.use('/api/orders', orderRoutes);
+
+const adminOrderRoutes = require('./routes/admin.order.routes');
+app.use('/api/admin/orders', adminOrderRoutes);
+
 // Placeholder para rutas futuras (productos, pedidos)
 module.exports = app;

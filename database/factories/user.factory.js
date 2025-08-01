@@ -7,6 +7,7 @@ exports.userFactory = async (overrides = {}) => {
     name: faker.person.fullName(),
     email: faker.internet.email(),
     password: await bcrypt.hash("123456", 10),
+    role: "CUSTOMER",
   };
 
   return new User({ ...defaultData, ...overrides });

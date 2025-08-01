@@ -3,16 +3,21 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const generateToken = (user) => {
-  return jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, {
-    expiresIn: "7d",
-  });
+  return jwt.sign(
+    {
+      id: user._id,
+      email: user.email,
+      role: user.role
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: "7d" }
+  );
 };
 
 exports.register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // Verificar si el usuario ya existe
     const existing = await User.findOne({ email });
     if (existing) {
       return res.status(400).json({ message: "El correo ya está registrado" });
@@ -25,6 +30,7 @@ exports.register = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role,
       },
       token: generateToken(user),
     });
@@ -52,6 +58,7 @@ exports.login = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role,
       },
       token: generateToken(user),
     });
